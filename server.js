@@ -2,13 +2,15 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var stringifyFile = '';
+var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+app.put('/put',function(req,res){console.log('PUT');res.send('PUT');});
 app.post('/', function (req, res) {
     console.log('Otrzymałem żądanie POST do strony głównej');
     res.send('Hello POST!');
 });
-app.all('/del_user', function (req, res) {
+app.delete('/del_user', function (req, res) {
     console.log('Otrzymałem żądanie DELETE do strony /del_user');
     res.send('Hello DELETE!');
 });
@@ -28,11 +30,11 @@ app.get('/ab*cd', function(req, res) {
 app.get('/getNote', function(req,res){
 	fs.readFile('./test.json', 'utf8', function(err, data) {
     if (err) throw err;
-    stringifyFile = data
+    stringifyFile = data;
     res.send(data);
 	});
 });
-app.all('/updateNote/:note', function(req,res){
+app.post('/updateNote/:note', function(req,res){
 	fs.writeFile('./test.json', stringifyFile, function(err) {
     if (err) throw err;
     console.log('file updated');
